@@ -1,14 +1,15 @@
+import sys
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-from sklearn.preprocessing import MinMaxScaler
+import mlflow
 
 
 def load_data():
     data = pd.read_csv("data.csv", delimiter=',', dtype='a')
     return data.values
 
-def regression(data):
+def regression(data, steps, learning_rate):
     sess = tf.Session()
     x1_vals   = data[:,0].astype(np.float32)
     x2_vals   = data[:,1].astype(np.float32)
@@ -27,10 +28,10 @@ def regression(data):
 
     init = tf.global_variables_initializer()
     sess.run(init)
-    my_opt = tf.train.GradientDescentOptimizer(0.001)
+    my_opt = tf.train.GradientDescentOptimizer(learning_rate)
     train_step = my_opt.minimize(loss)
 
-    for i in range(5000):
+    for i in range(steps):
         rand_index = np.random.choice(len(x1_vals), size=100)
         rand_x1 = np.transpose([x1_vals[rand_index]])
         rand_x2 = np.transpose([x2_vals[rand_index]])
@@ -40,12 +41,18 @@ def regression(data):
         temp_loss = sess.run(loss, feed_dict={x1_data: rand_x1, x2_data: rand_x2, y_target: rand_y})
         if i%25 == 0:
             print(f'Step {i} - Loss {temp_loss} - X1 = {sess.run(X1)}, X2 = {sess.run(X2)}')
+            mlflow.log_metric("loss", temp_loss)
 
     return (sess.run(X1), sess.run(X2))
 
 def main():
+    steps = int(sys.argv[1])
+    learning_rate = float(sys.argv[2])
+    mlflow.log_param("steps", steps)
+    mlflow.log_param("learning_rate", learning_rate)
+    
     data = load_data()
-    result = regression(data)
+    result = regression(data, steps, learning_rate)
     print(f'X1={result[0][0]}, X2={result[1][0]}')
 
 if __name__ == "__main__":
