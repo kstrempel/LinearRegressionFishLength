@@ -5,6 +5,6 @@ conda_env: conda.yaml
 entry_points:
   main:
     parameters:
-      steps: int
+      steps: {type: int, default: 1000}
       learning_rate: {type: float, default: 0.001}
     command: "python run.py {steps} {learning_rate}"
