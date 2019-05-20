@@ -1,0 +1,7 @@
+name: fishlength
+channels:
+  - defaults
+dependencies:
+  - tensorflow=1.13.1
+  - pip:
+    - mlflow
