@@ -46,8 +46,6 @@ def regression(data, steps, learning_rate):
     X1 = sess.run(X1)
     X2 = sess.run(X2)
 
-    mlflow.log_artifact("run.py")
-
     return (X1, X2)
 
 def main():
