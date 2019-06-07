@@ -26,7 +26,7 @@ e.g.
 
 Start the MLFlow server with:
 
-```mlflow server````
+```mlflow server```
 
 In the overview click select the experiment that you want to check. 
 
