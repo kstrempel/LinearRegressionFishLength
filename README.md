@@ -34,3 +34,6 @@ In the metrics section click on the loos link.
 
 You should see something like this:
 
+![Loss History](https://github.com/kstrempel/LinearRegressionFishLength/blob/master/loss.png)
+
+Now you can play with the amount of steps and learning rate. :-)
